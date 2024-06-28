@@ -20,8 +20,19 @@ app.get("/", function (req, res) {
 
 
 // your first API endpoint... 
-app.get("/api/hello", function (req, res) {
-  res.json({greeting: 'hello API'});
+app.get("/api", (req, res) => {
+  res.json({unix: new Date().getTime(), utc: new Date().toUTCString() });
+});
+
+app.get("/api/:date", function (req, res) {
+  date = new Date(req.params.date);
+  if( date.toUTCString() === "Invalid Date" ){
+    date = new Date(+req.params.date);
+    if(date.toUTCString() === 'Invalid Date'){
+      res.json({error: "Invalid Date" });
+    }
+  }
+  res.json({unix: date.getTime(), utc: date.toUTCString() });
 });
 
 
